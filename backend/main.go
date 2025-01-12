@@ -1,3 +1,4 @@
+// main.go
 package main
 
 import (
@@ -30,10 +31,13 @@ func setupRoutes() {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(pool, w, r)
 	})
+
+	// Serve React build folder
+	http.Handle("/", http.FileServer(http.Dir("./frontend")))
 }
 
 func main() {
-	fmt.Println("Distributed Chat App v0.01")
+	fmt.Println("Chat App Server started on port :8080")
 	setupRoutes()
 	http.ListenAndServe(":8080", nil)
 }
